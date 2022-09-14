@@ -1,0 +1,75 @@
+#include <iostream>
+using namespace std;
+
+class FooString {
+	char* buf;
+public:
+	FooString(const char* tbuf)
+	{
+		int strSize = length(tbuf);
+		buf = new char[strSize + 1];
+		buf[strSize] = 0;
+		for (int i = 0; i < strSize; i++)
+		{
+			buf[i] = tbuf[i];
+		}
+		cout << "Constructor called for arr  " << this << "\n" << endl;
+	};
+
+	int length()
+	{
+		int size = 0;
+		while (buf[size] != 0)
+		{
+			size++;
+		}
+		return size;
+	}
+
+	int length(const char* tbuf)
+	{
+		int size = 0;
+		while (tbuf[size] != 0)
+		{
+			size++;
+		}
+		return size+1;
+	}
+	
+	~FooString()
+	{
+		delete[] buf;
+		cout << "Destructor called for arr  " << this << "\n" << endl;
+	};
+
+	void show() 
+	{
+		cout << buf << "\n" << endl;
+	}
+
+	void add(const char* str)
+	{
+		char *buf_new = new char[(length() + length(str))];
+		for (int i = 0; i < length(buf)-1; i++)
+		{
+			buf_new[i] = buf[i];
+		}
+		for (int i = 0; i < length(str) - 1; i++)
+		{
+			buf_new[length() + i] = str[i];
+		}
+		buf_new[(length() + length(str))-1] = 0;
+		delete[] buf;
+		buf = buf_new;
+		buf_new = nullptr;
+	}
+};
+
+int main()
+{
+	FooString str1("Text1");
+	str1.show();
+	str1.length();
+	str1.add("Text2");
+	str1.show();
+}
